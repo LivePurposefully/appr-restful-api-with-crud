@@ -5,12 +5,15 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+var IdCounter int = 0
+
 type Passive struct{
 	Name string `json:"passivename" binding:"required"`
 	Scaling string `json:"scaling" binding: "required"`
 }
 
 type Champion struct{
+	Id int
 	Name string `json:"name" binding:"required"`
 	DamageSource string `json:"damagesource" binding:"required"`
 	PassiveAbility Passive `json:"passiveability" binding:"required"`
@@ -26,6 +29,8 @@ func respondToPostChampion(c *gin.Context){
 	var champion Champion
 	
 	err := c.ShouldBindJSON(&champion)
+	champion.Id = IdCounter
+	IdCounter += 1
 
 	log.Println(champion)
 	log.Println(err)
